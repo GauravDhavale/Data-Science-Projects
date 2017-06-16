@@ -58,7 +58,8 @@ def prepareSchedule():
         counter += flight_times['DAL-AUS'] + airport_wait_time['AUS'] + 1
     printFlightScedule()
     
-        
+
+prepareSchedule()
     
 
 
