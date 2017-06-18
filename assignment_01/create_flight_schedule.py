@@ -125,7 +125,7 @@ def updateBFBTForFlightAndGate():
 def updateFlightScheduleList():
     arrivaltime = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]]
     row = [bookFlight[0],bookFlight[2],bookFlight[4], minutesSinceMidntToTime(timer), 
-           minutesSinceMidntToTime(arrivaltime),bookFlight[1], bookFlight[3],timer,arrivaltime]
+           minutesSinceMidntToTime(arrivaltime),bookFlight[1], bookFlight[3]]
     flight_schedule.append(row)
     #print('row', row)
 
