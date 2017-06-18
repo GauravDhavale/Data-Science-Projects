@@ -5,54 +5,57 @@ Created on Tue Jun 13 18:15:06 2017
 @author: Gaurav
 """
 
-aircraft = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6']
-
 #['TailNo', 'A/B: Available/Busy', 'Gate: On Which gate or STN: No gate', 'BusyFrom','BusyTo']
 aircraftdtl = [                            
-            ['T1', 'A', 'STN', 000, 000],
-            ['T2', 'A', 'STN', 000, 000],
-            ['T3', 'A', 'STN', 000, 000],
-            ['T4', 'A', 'STN', 000, 000],
-            ['T5', 'A', 'STN', 000, 000],
-            ['T6', 'A', 'STN', 000, 000]]
+            ['T1', 'A', 'STN', 0, 0],
+            ['T2', 'A', 'STN', 0, 0],
+            ['T3', 'A', 'STN', 0, 0],
+            ['T4', 'A', 'STN', 0, 0],
+            ['T5', 'A', 'STN', 0, 0],
+            ['T6', 'A', 'STN', 0, 0]]
 
 # ['B/F: Canbooked or not','Gate','Airport','A/B: Available/Busy', 'BusyFrom', 'BusyTo']
-gatedtl = [['B', 'A', 'G1', 'AUS', 000, 000],
-           ['B', 'A', 'G2', 'DAL', 000, 000],
-           ['B', 'A', 'G3', 'DAL', 000, 000],
-           ['B', 'A', 'G4', 'HOU', 000, 000],
-           ['B', 'A', 'G5', 'HOU', 000, 000],
-           ['B', 'A', 'G6', 'HOU', 000, 000]]
-
+gatedtl = [['B', 'A', 'G1', 'AUS', 0, 0],
+           ['B', 'A', 'G2', 'DAL', 0, 0],
+           ['B', 'A', 'G3', 'DAL', 0, 0],
+           ['B', 'A', 'G4', 'HOU', 0, 0],
+           ['B', 'A', 'G5', 'HOU', 0, 0],
+           ['B', 'A', 'G6', 'HOU', 0, 0]]
 
 #gate values similar for same airport to avoide within airport flight booking
 gateValue = {'G1':1, 'G2':2, 'G3':2, 'G4':3, 'G5':3, 'G6':3}
+
 # Tail number, from Gate , from airport, To Gate, to airport
 bookFlight = ['A', 'A','A','A','A']
 
-airport = ['AUS', 'DAL', 'HOU']
+#flight travel time between airports in minutes
 flight_times = {'AUS-DAL': 50, 'DAL-AUS': 50, 'AUS-HOU' : 45, 'HOU-AUS' : 45, 'DAL-HOU': 65, 'HOU-DAL' : 65}
-airport_waiting = [['AUS', 25], ['DAL', 30], ['HOU', 35]]
-airport_wait_time = dict(airport_waiting)
-airport_gate = [['AUS', 1], ['DAL', 2], ['HOU', 3]]
+
+#airport minimum waiting time in minute
+airport_wait_time = {'AUS': 25, 'DAL': 30, 'HOU': 35}
+
+#Gates on airport
 airportGates = {'G1': 'AUS', 'G2':'DAL', 'G3':'DAL', 'G4': 'HOU', 'G5':'HOU', 'G6':'HOU'}
-airport_gate_no = dict(airport_gate)
+
+#flights schedule entries are added in this list while preparing the schedule 
 flight_schedule = []
+
+#final flight schedule that holds records for printing
 final_flight_schedule = [['tail_number','origin','destination','departure_time','arrival_time', 
                           'From Gate', 'To Gate']]
-start_time =360
-timer = 360
-end_time = 1320
 
-"""Convert time in minute since midnight to military time"""
+start_time =360 #start time for flight schedule as 06:00 => (6 * 60) + 0 = 360
+timer = 360 #this value will be used for looping check till end time
+end_time = 1320 #end time of the day as 22:00 => (22 * 60) + 0 = 1320
+
+#"""Convert time in minute since midnight to military time"""
 def minutesSinceMidntToTime(mTime):
     return ("%02d%02d" % (divmod(mTime,60)))
 
-
-"""Function to print the flight schedule using list"""
+#"""Function to print the flight schedule using list"""
 def printFlightScedule():
     import csv
-    flight_schedule = sortFlightList()
+    sortFlightList()
     for row in flight_schedule:
         final_flight_schedule.append(row)
     #print(final_flight_schedule)
@@ -61,16 +64,10 @@ def printFlightScedule():
          for item in final_flight_schedule:
              wr.writerow(item)
 
-"""search element in flight list"""
-
-
-"""Sort the flight list tail_number, departure_time"""
+#"""Sort the flight list tail_number, departure_time"""
 def sortFlightList():
-    #return flight_schedule.sort(key = lambda x: (x[1], -x[4]))
-    #flight_schedule_new = sorted(flight_schedule, key=lambda x: (x[0], -x[1]))
     import operator
-    flight_schedule_new = sorted(flight_schedule, key=operator.itemgetter(0, 3))
-    return flight_schedule_new
+    flight_schedule.sort(key=operator.itemgetter(0, 3))
 
 #reset flight availability
 def resetFlightAvailability():
@@ -116,14 +113,14 @@ def updateBFBTForFlightAndGate():
             item[3] = timer #flight booked from
             # timer + flight travel time + minimum wait time : # flight booked till
             item[4] = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]] + airport_wait_time[bookFlight[4]]    
-            print(item)
+            #print(item)
     # update gate
     for item in gatedtl:        
         if item[2] == bookFlight[3]:
             # Gate will bbe busy from flight landing time till min airport wait time
             item[4] = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]] 
             item[5] = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]] + airport_wait_time[bookFlight[4]]
-            print(item)
+            #print(item)
 
 # Add flight entry into flight_schedule list
 def updateFlightScheduleList():
@@ -131,7 +128,7 @@ def updateFlightScheduleList():
     row = [bookFlight[0],bookFlight[2],bookFlight[4], minutesSinceMidntToTime(timer), 
            minutesSinceMidntToTime(arrivaltime),bookFlight[1], bookFlight[3]]
     flight_schedule.append(row)
-    print('row', row)
+    #print('row', row)
 
 #increment global timer
 def incrementTimer():
@@ -144,23 +141,23 @@ def prepareFlightSchedule():
         resetFlightAvailability()#reset flight status for new time check
         resetGateAvailability() #reset gate status for new time check            
         for flight in aircraftdtl:
-            print(timer)
+            #print(timer)
             if(flight[1] == 'A'):
                 bookFlight[0] = flight[0]
-                print('flight', flight[0])
+                #print('flight', flight[0])
                 if flight[2] == 'STN':                                
                     for item in gatedtl:
                         if(item[1] == 'A' and item[0] == 'B'):
                             bookFlight[1] = item[2]
                             bookFlight[2] = airportGates[item[2]]
-                            print(item[2], airportGates[item[2]])
+                            #print(item[2], airportGates[item[2]])
                             item[1] = 'B'
                             secondGate = searchGate()
                             #print('second', secondGate)
                             if secondGate != 'NG':
                                 bookFlight[3] = secondGate
                                 bookFlight[4] = airportGates[secondGate]
-                                print('second gate', secondGate, airportGates[secondGate])
+                                #print('second gate', secondGate, airportGates[secondGate])
                                 # found fligh and both gates now update BF, BT and Flight Schedule
                                 flight[1] = 'B'
                                 updateBFBTForFlightAndGate()
