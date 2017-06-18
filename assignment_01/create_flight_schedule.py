@@ -52,7 +52,7 @@ def minutesSinceMidntToTime(mTime):
 """Function to print the flight schedule using list"""
 def printFlightScedule():
     import csv
-    #sortFlightList()
+    flight_schedule = sortFlightList()
     for row in flight_schedule:
         final_flight_schedule.append(row)
     #print(final_flight_schedule)
@@ -66,7 +66,11 @@ def printFlightScedule():
 
 """Sort the flight list tail_number, departure_time"""
 def sortFlightList():
-    return flight_schedule.sort(key = lambda x: (x[1], x[4]))
+    #return flight_schedule.sort(key = lambda x: (x[1], -x[4]))
+    #flight_schedule_new = sorted(flight_schedule, key=lambda x: (x[0], -x[1]))
+    import operator
+    flight_schedule_new = sorted(flight_schedule, key=operator.itemgetter(0, 3))
+    return flight_schedule_new
 
 #reset flight availability
 def resetFlightAvailability():
@@ -99,7 +103,7 @@ def searchGate():
                 return gate[2]
             else:                
                 arrivalTime = timer + flight_times[bookFlight[2]+'-'+airportGates[gate[2]]]
-                if arrivalTime > gate[5]:
+                if arrivalTime < end_time and arrivalTime > gate[5]:
                     return gate[2]
     return 'NG' # in case if no gate is availale
 
@@ -108,7 +112,7 @@ def updateBFBTForFlightAndGate():
     #update flight
     for item in aircraftdtl:
         if item[0] == bookFlight[0]:
-            item[2] = bookFlight[1] # flight is on which gate 
+            item[2] = bookFlight[3] # flight is on which gate 
             item[3] = timer #flight booked from
             # timer + flight travel time + minimum wait time : # flight booked till
             item[4] = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]] + airport_wait_time[bookFlight[4]]    
@@ -127,7 +131,7 @@ def updateFlightScheduleList():
     row = [bookFlight[0],bookFlight[2],bookFlight[4], minutesSinceMidntToTime(timer), 
            minutesSinceMidntToTime(arrivaltime),bookFlight[1], bookFlight[3]]
     flight_schedule.append(row)
-    #print('row', row)
+    print('row', row)
 
 #increment global timer
 def incrementTimer():
@@ -136,11 +140,11 @@ def incrementTimer():
     
 """Flight Algorithm """
 def prepareFlightSchedule():
-    while timer < end_time:
+    while timer < (end_time-65): #min time require by any flight for travel & airport wait is 65
         resetFlightAvailability()#reset flight status for new time check
         resetGateAvailability() #reset gate status for new time check            
         for flight in aircraftdtl:
-            #print(timer)
+            print(timer)
             if(flight[1] == 'A'):
                 bookFlight[0] = flight[0]
                 print('flight', flight[0])
