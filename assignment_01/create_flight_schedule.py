@@ -27,8 +27,8 @@ gatedtl = [['B', 'A', 'G1', 'AUS', 000, 000],
 
 #gate values similar for same airport to avoide within airport flight booking
 gateValue = {'G1':1, 'G2':2, 'G3':2, 'G4':3, 'G5':3, 'G6':3}
-# Tail number, from Gate , To Gate
-bookFlight = []
+# Tail number, from Gate , from airport, To Gate, to airport
+bookFlight = ['', '','','','']
 
 airport = ['AUS', 'DAL', 'HOU']
 flight_times = {'AUS-DAL': 50, 'DAL-AUS': 50, 'AUS-HOU' : 45, 'HOU-AUS' : 45, 'DAL-HOU': 65, 'HOU-DAL' : 65}
@@ -96,7 +96,7 @@ def searchGate():
             if gate[4] == 0  and gate[5] == 0:
                 return gate[2]
             else:                
-                arrivalTime = timer + flight_times[airportGates[bookFlight[1]]+'-'+airportGates[gate[2]]]
+                arrivalTime = timer + flight_times[bookFlight[2]+'-'+airportGates[gate[2]]]
                 if arrivalTime < gate[4] or arrivalTime > gate[5]:
                     return gate[2]
     return 'NG' # in case if no gate is availale
@@ -106,53 +106,63 @@ def updateBFBTForFlightAndGate():
     #update flight
     for item in aircraftdtl:
         if item[0] == bookFlight[0]:
-            # timer + flight travel time + minimum wait time
-            item[3] = timer + flight_times[airportGates[bookFlight[1]]+'-'+airportGates[bookFlight[2]]] + airportGates[bookFlight[2]]
+            item[2] = airportGates[bookFlight[1]] # flight is on which gate 
+            item[4] = timer #flight booked from
+            # timer + flight travel time + minimum wait time : # flight booked till
+            item[4] = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]] + airport_wait_time[bookFlight[4]]    
+    # update gate
+    for item in gatedtl:
+        if item[2] == bookFlight[2]:
+            # Gate will bbe busy from flight landing time till min airport wait time
+            item[4] = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]] 
+            item[5] = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]] + airport_wait_time[bookFlight[4]]   
 
 # Add flight entry into flight_schedule list
 def updateFlightScheduleList():
-    
-
+    arrivaltime = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]]
+    row = [bookFlight[0],bookFlight[2],bookFlight[4], minutesSinceMidntToTime(timer), minutesSinceMidntToTime(arrivaltime)]
+    flight_schedule.append(row)
     
 """Flight Algorithm """
 def prepareFlightSchedule():
-    while timer <= end_time:
+    for timer in range(start_time, end_time):
         resetFlightAvailability()#reset flight status for new time check            
         for flight in aircraftdtl:
             if(flight[1] == 'A'):
                 bookFlight[0] = flight[0]
-                resetGateAvailability() #reset gate status for new time check
-                for item in gatedtl:
-                    if(item[1] == 'A' and item[1] == 'B'):
-                        bookFlight[1] = item[2]
-                        item[1] = 'B'
-                        secondGate = searchGate()
-                        if secondGate != 'NG':
-                            bookFlight[2] = secondGate
-                            # found fligh and both gates now update BF, BT and Flight Schedule
-                
-        
-    
+                if flight[2] == 'STN':            
+                    resetGateAvailability() #reset gate status for new time check
+                    for item in gatedtl:
+                        if(item[1] == 'A' and item[0] == 'B'):
+                            bookFlight[1] = item[2]
+                            bookFlight[2] = airportGates[item[2]]
+                            item[1] = 'B'
+                            secondGate = searchGate()
+                            if secondGate != 'NG':
+                                bookFlight[3] = secondGate
+                                bookFlight[4] = airportGates[secondGate]
+                                # found fligh and both gates now update BF, BT and Flight Schedule
+                                updateFlightScheduleList()
+                else:
+                    bookFlight[1] = flight[2]
+                    bookFlight[2] = airportGates[flight[2]]
+                    resetGateAvailability() #reset gate status for new time check
+                    #now mark this gate as busy
+                    for gate in gatedtl:
+                        if gate[2] == flight[2]:
+                            gate[1] = 'B'
+                            break
+                    secondGate = searchGate()
+                    if secondGate != 'NG':
+                        bookFlight[3] = secondGate
+                        bookFlight[4] = airportGates[secondGate]
+                        # found fligh and both gates now update BF, BT and Flight Schedule
+                        updateFlightScheduleList()
     printFlightScedule()
+                            
+prepareFlightSchedule()
     
 
-prepareSchedule()
-    
-
-"""
-while counter <= end_time:
-        if counter + flight_times['AUS-DAL'] < end_time:
-            templist = [aircraft[0], airport[0], airport[1],minutesSinceMidntToTime(counter),
-                        minutesSinceMidntToTime(counter+flight_times['AUS-DAL'])]            
-            flight_schedule.append(templist)
-        counter += flight_times['AUS-DAL'] + airport_wait_time['DAL'] + 1
-        
-        if counter + flight_times['DAL-AUS'] < end_time:
-            templist = [aircraft[0], airport[0], airport[1],minutesSinceMidntToTime(counter),
-                        minutesSinceMidntToTime(counter+flight_times['AUS-DAL'])]            
-            flight_schedule.append(templist)
-        counter += flight_times['DAL-AUS'] + airport_wait_time['AUS'] + 1
-"""
 
 
    
