@@ -41,8 +41,7 @@ airportGates = {'G1': 'AUS', 'G2':'DAL', 'G3':'DAL', 'G4': 'HOU', 'G5':'HOU', 'G
 flight_schedule = []
 
 #final flight schedule that holds records for printing
-final_flight_schedule = [['tail_number','origin','destination','departure_time','arrival_time', 
-                          'From Gate', 'To Gate']]
+final_flight_schedule = [['tail_number','origin','destination','departure_time','arrival_time']]
 
 start_time =360 #start time for flight schedule as 06:00 => (6 * 60) + 0 = 360
 timer = 360 #this value will be used for looping check till end time
@@ -126,7 +125,7 @@ def updateBFBTForFlightAndGate():
 def updateFlightScheduleList():
     arrivaltime = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]]
     row = [bookFlight[0],bookFlight[2],bookFlight[4], minutesSinceMidntToTime(timer), 
-           minutesSinceMidntToTime(arrivaltime),bookFlight[1], bookFlight[3]]
+           minutesSinceMidntToTime(arrivaltime)]
     flight_schedule.append(row)
     #print('row', row)
 
@@ -158,7 +157,7 @@ def prepareFlightSchedule():
                                 bookFlight[3] = secondGate
                                 bookFlight[4] = airportGates[secondGate]
                                 #print('second gate', secondGate, airportGates[secondGate])
-                                # found fligh and both gates now update BF, BT and Flight Schedule
+                                # found flight and both gates now update BF, BT and Flight Schedule
                                 flight[1] = 'B'
                                 updateBFBTForFlightAndGate()
                                 updateFlightScheduleList()
