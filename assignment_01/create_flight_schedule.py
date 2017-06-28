@@ -72,7 +72,7 @@ def sortFlightList():
 def resetFlightAvailability():
     for item in aircraftdtl:
         if item[3] != 0 and item[4] != 0:
-            if timer < item[3] or timer > item[4]:
+            if timer > item[4]:
                 item[1] = 'A'
             else:
                 item[1] = 'B'
@@ -84,7 +84,7 @@ def resetGateAvailability():
     for item in gatedtl:
         item[0] = 'B'
         if item[4] != 0 and item[5] != 0:
-            if timer < item[4] or timer > item[5]:
+            if timer > item[5]:
                 item[1] = 'A'
             else:
                 item[1] = 'B'
@@ -111,8 +111,9 @@ def updateBFBTForFlightAndGate():
             item[2] = bookFlight[3] # flight is on which gate 
             item[3] = timer #flight booked from
             # timer + flight travel time + minimum wait time : # flight booked till
-            item[4] = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]] + airport_wait_time[bookFlight[4]]    
+            item[4] = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]] + airport_wait_time[bookFlight[4]]                
             #print(item)
+            break
     # update gate
     for item in gatedtl:        
         if item[2] == bookFlight[3]:
@@ -120,12 +121,15 @@ def updateBFBTForFlightAndGate():
             item[4] = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]] 
             item[5] = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]] + airport_wait_time[bookFlight[4]]
             #print(item)
+            break
 
 # Add flight entry into flight_schedule list
 def updateFlightScheduleList():
     arrivaltime = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]]
     row = [bookFlight[0],bookFlight[2],bookFlight[4], minutesSinceMidntToTime(timer), 
-           minutesSinceMidntToTime(arrivaltime)]
+           minutesSinceMidntToTime(arrivaltime)
+           #,bookFlight[1],bookFlight[3], minutesSinceMidntToTime(arrivaltime + airport_wait_time[bookFlight[4]]+1)
+           ]
     flight_schedule.append(row)
     #print('row', row)
 
