@@ -1,10 +1,146 @@
 
-2017-06-30 16:23 Friday
+2017-06-30 16:25 Friday
  Checking Directory: assignment_01 File: create_flight_schedule.py
 Assignment source code file found
 Assignment source code completed a run without a stack trace
 Please check instructor_stdout.txt for stdout (if any)
 Please check instructor_stderr.txt for stderr (if any)
-Attempting to read flight schedule file: flight_schedule1.csv
-File not found
-Flight schedule file did not load and validate - 0 points
+Attempting to read flight schedule file: flight_schedule.csv
+[['T1', 'AUS', 'DAL', '0600', 360, '0650', 410], ['T1', 'DAL', 'AUS', '0721', 441, '0811', 491], ['T1', 'AUS', 'DAL', '0837', 517, '0927', 567], ['T1', 'DAL', 'AUS', '0958', 598, '1048', 648], ['T1', 'AUS', 'DAL', '1114', 674, '1204', 724], ['T1', 'DAL', 'HOU', '1235', 755, '1340', 820], ['T1', 'HOU', 'DAL', '1416', 856, '1521', 921], ['T1', 'DAL', 'HOU', '1552', 952, '1657', 1017], ['T1', 'HOU', 'DAL', '1733', 1053, '1838', 1118], ['T1', 'DAL', 'HOU', '1909', 1149, '2014', 1214], ['T1', 'HOU', 'DAL', '2050', 1250, '2155', 1315], ['T2', 'DAL', 'AUS', '0600', 360, '0650', 410], ['T2', 'AUS', 'DAL', '0716', 436, '0806', 486], ['T2', 'DAL', 'AUS', '0838', 518, '0928', 568], ['T2', 'AUS', 'DAL', '0954', 594, '1044', 644], ['T2', 'DAL', 'AUS', '1115', 675, '1205', 725], ['T2', 'AUS', 'DAL', '1231', 751, '1321', 801], ['T2', 'DAL', 'AUS', '1352', 832, '1442', 882], ['T2', 'AUS', 'DAL', '1508', 908, '1558', 958], ['T2', 'DAL', 'AUS', '1629', 989, '1719', 1039], ['T2', 'AUS', 'HOU', '1745', 1065, '1830', 1110], ['T2', 'HOU', 'AUS', '1906', 1146, '1951', 1191], ['T2', 'AUS', 'DAL', '2017', 1217, '2107', 1267], ['T3', 'DAL', 'HOU', '0600', 360, '0705', 425], ['T3', 'HOU', 'DAL', '0741', 461, '0846', 526], ['T3', 'DAL', 'AUS', '0917', 557, '1007', 607], ['T3', 'AUS', 'DAL', '1033', 633, '1123', 683], ['T3', 'DAL', 'AUS', '1154', 714, '1244', 764], ['T3', 'AUS', 'DAL', '1310', 790, '1400', 840], ['T3', 'DAL', 'AUS', '1431', 871, '1521', 921], ['T3', 'AUS', 'DAL', '1547', 947, '1637', 997], ['T3', 'DAL', 'AUS', '1708', 1028, '1758', 1078], ['T3', 'AUS', 'DAL', '1824', 1104, '1914', 1154], ['T3', 'DAL', 'AUS', '1945', 1185, '2035', 1235], ['T4', 'HOU', 'DAL', '0600', 360, '0705', 425], ['T4', 'DAL', 'HOU', '0736', 456, '0841', 521], ['T4', 'HOU', 'DAL', '0918', 558, '1023', 623], ['T4', 'DAL', 'HOU', '1054', 654, '1159', 719], ['T4', 'HOU', 'DAL', '1236', 756, '1341', 821], ['T4', 'DAL', 'HOU', '1412', 852, '1517', 917], ['T4', 'HOU', 'DAL', '1553', 953, '1658', 1018], ['T4', 'DAL', 'HOU', '1729', 1049, '1834', 1114], ['T4', 'HOU', 'DAL', '1910', 1150, '2015', 1215], ['T4', 'DAL', 'AUS', '2046', 1246, '2136', 1296], ['T5', 'HOU', 'DAL', '0616', 376, '0721', 441], ['T5', 'DAL', 'AUS', '0752', 472, '0842', 522], ['T5', 'AUS', 'DAL', '0908', 548, '0958', 598], ['T5', 'DAL', 'AUS', '1029', 629, '1119', 679], ['T5', 'AUS', 'DAL', '1145', 705, '1235', 755], ['T5', 'DAL', 'AUS', '1306', 786, '1356', 836], ['T5', 'AUS', 'DAL', '1422', 862, '1512', 912], ['T5', 'DAL', 'AUS', '1543', 943, '1633', 993], ['T5', 'AUS', 'DAL', '1659', 1019, '1749', 1069], ['T5', 'DAL', 'AUS', '1820', 1100, '1910', 1150], ['T5', 'AUS', 'DAL', '1936', 1176, '2026', 1226], ['T6', 'HOU', 'AUS', '0631', 391, '0716', 436], ['T6', 'AUS', 'DAL', '0742', 462, '0832', 512], ['T6', 'DAL', 'HOU', '0903', 543, '1008', 608], ['T6', 'HOU', 'DAL', '1044', 644, '1149', 709], ['T6', 'DAL', 'AUS', '1220', 740, '1310', 790], ['T6', 'AUS', 'DAL', '1336', 816, '1426', 866], ['T6', 'DAL', 'AUS', '1457', 897, '1547', 947], ['T6', 'AUS', 'HOU', '1613', 973, '1658', 1018], ['T6', 'HOU', 'DAL', '1734', 1054, '1839', 1119], ['T6', 'DAL', 'HOU', '1911', 1151, '2016', 1216], ['T6', 'HOU', 'DAL', '2052', 1252, '2157', 1317]]
+Flight schedule file loaded and validated - 5 points
+Noise restrictions validated - 5 points
+Flight times validated - 5 points
+['T1', 'AUS', '0000', 0, '0600', 360]
+ground time is 360
+['T1', 'DAL', '0650', 410, '0721', 441]
+ground time is 31
+['T1', 'AUS', '0811', 491, '0837', 517]
+ground time is 26
+['T1', 'DAL', '0927', 567, '0958', 598]
+ground time is 31
+['T1', 'AUS', '1048', 648, '1114', 674]
+ground time is 26
+['T1', 'DAL', '1204', 724, '1235', 755]
+ground time is 31
+['T1', 'HOU', '1340', 820, '1416', 856]
+ground time is 36
+['T1', 'DAL', '1521', 921, '1552', 952]
+ground time is 31
+['T1', 'HOU', '1657', 1017, '1733', 1053]
+ground time is 36
+['T1', 'DAL', '1838', 1118, '1909', 1149]
+ground time is 31
+['T1', 'HOU', '2014', 1214, '2050', 1250]
+ground time is 36
+['T2', 'DAL', '0000', 0, '0600', 360]
+ground time is 360
+['T2', 'AUS', '0650', 410, '0716', 436]
+ground time is 26
+['T2', 'DAL', '0806', 486, '0838', 518]
+ground time is 32
+['T2', 'AUS', '0928', 568, '0954', 594]
+ground time is 26
+['T2', 'DAL', '1044', 644, '1115', 675]
+ground time is 31
+['T2', 'AUS', '1205', 725, '1231', 751]
+ground time is 26
+['T2', 'DAL', '1321', 801, '1352', 832]
+ground time is 31
+['T2', 'AUS', '1442', 882, '1508', 908]
+ground time is 26
+['T2', 'DAL', '1558', 958, '1629', 989]
+ground time is 31
+['T2', 'AUS', '1719', 1039, '1745', 1065]
+ground time is 26
+['T2', 'HOU', '1830', 1110, '1906', 1146]
+ground time is 36
+['T2', 'AUS', '1951', 1191, '2017', 1217]
+ground time is 26
+['T3', 'DAL', '0000', 0, '0600', 360]
+ground time is 360
+['T3', 'HOU', '0705', 425, '0741', 461]
+ground time is 36
+['T3', 'DAL', '0846', 526, '0917', 557]
+ground time is 31
+['T3', 'AUS', '1007', 607, '1033', 633]
+ground time is 26
+['T3', 'DAL', '1123', 683, '1154', 714]
+ground time is 31
+['T3', 'AUS', '1244', 764, '1310', 790]
+ground time is 26
+['T3', 'DAL', '1400', 840, '1431', 871]
+ground time is 31
+['T3', 'AUS', '1521', 921, '1547', 947]
+ground time is 26
+['T3', 'DAL', '1637', 997, '1708', 1028]
+ground time is 31
+['T3', 'AUS', '1758', 1078, '1824', 1104]
+ground time is 26
+['T3', 'DAL', '1914', 1154, '1945', 1185]
+ground time is 31
+['T4', 'HOU', '0000', 0, '0600', 360]
+ground time is 360
+['T4', 'DAL', '0705', 425, '0736', 456]
+ground time is 31
+['T4', 'HOU', '0841', 521, '0918', 558]
+ground time is 37
+['T4', 'DAL', '1023', 623, '1054', 654]
+ground time is 31
+['T4', 'HOU', '1159', 719, '1236', 756]
+ground time is 37
+['T4', 'DAL', '1341', 821, '1412', 852]
+ground time is 31
+['T4', 'HOU', '1517', 917, '1553', 953]
+ground time is 36
+['T4', 'DAL', '1658', 1018, '1729', 1049]
+ground time is 31
+['T4', 'HOU', '1834', 1114, '1910', 1150]
+ground time is 36
+['T4', 'DAL', '2015', 1215, '2046', 1246]
+ground time is 31
+['T5', 'HOU', '0000', 0, '0616', 376]
+ground time is 376
+['T5', 'DAL', '0721', 441, '0752', 472]
+ground time is 31
+['T5', 'AUS', '0842', 522, '0908', 548]
+ground time is 26
+['T5', 'DAL', '0958', 598, '1029', 629]
+ground time is 31
+['T5', 'AUS', '1119', 679, '1145', 705]
+ground time is 26
+['T5', 'DAL', '1235', 755, '1306', 786]
+ground time is 31
+['T5', 'AUS', '1356', 836, '1422', 862]
+ground time is 26
+['T5', 'DAL', '1512', 912, '1543', 943]
+ground time is 31
+['T5', 'AUS', '1633', 993, '1659', 1019]
+ground time is 26
+['T5', 'DAL', '1749', 1069, '1820', 1100]
+ground time is 31
+['T5', 'AUS', '1910', 1150, '1936', 1176]
+ground time is 26
+['T6', 'HOU', '0000', 0, '0631', 391]
+ground time is 391
+['T6', 'AUS', '0716', 436, '0742', 462]
+ground time is 26
+['T6', 'DAL', '0832', 512, '0903', 543]
+ground time is 31
+['T6', 'HOU', '1008', 608, '1044', 644]
+ground time is 36
+['T6', 'DAL', '1149', 709, '1220', 740]
+ground time is 31
+['T6', 'AUS', '1310', 790, '1336', 816]
+ground time is 26
+['T6', 'DAL', '1426', 866, '1457', 897]
+ground time is 31
+['T6', 'AUS', '1547', 947, '1613', 973]
+ground time is 26
+['T6', 'HOU', '1658', 1018, '1734', 1054]
+ground time is 36
+['T6', 'DAL', '1839', 1119, '1911', 1151]
+ground time is 32
+['T6', 'HOU', '2016', 1216, '2052', 1252]
+ground time is 36
+Ground times validated - 5 points
+TBD - checking for too many aircraft on the group at an airport
