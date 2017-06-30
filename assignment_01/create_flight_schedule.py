@@ -41,8 +41,8 @@ airportGates = {'G1': 'AUS', 'G2':'DAL', 'G3':'DAL', 'G4': 'HOU', 'G5':'HOU', 'G
 flight_schedule = []
 
 #final flight schedule that holds records for printing
-final_flight_schedule = [['tail_number','origin','destination','departure_time','arrival_time']]
-
+flight_schedule_hdr = 'tail_number,origin,destination,departure_time,arrival_time'
+fileName = 'flight_schedule.csv';
 start_time =360 #start time for flight schedule as 06:00 => (6 * 60) + 0 = 360
 timer = 360 #this value will be used for looping check till end time
 end_time = 1320 #end time of the day as 22:00 => (22 * 60) + 0 = 1320
@@ -53,15 +53,11 @@ def minutesSinceMidntToTime(mTime):
 
 #"""Function to print the flight schedule using list"""
 def printFlightScedule():
-    import csv
     sortFlightList()
-    for row in flight_schedule:
-        final_flight_schedule.append(row)
-    #print(final_flight_schedule)
-    with open('flight_schedule.csv', 'w', newline='') as schedule:
-         wr = csv.writer(schedule, quoting=csv.QUOTE_ALL)
-         for item in final_flight_schedule:
-             wr.writerow(item)
+    with open(fileName,'wt') as f:
+        print(flight_schedule_hdr, file=f)
+        for s in flight_schedule:
+            print(','.join(s), file=f)
 
 #"""Sort the flight list tail_number, departure_time"""
 def sortFlightList():
