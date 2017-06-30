@@ -16,10 +16,10 @@ aircraftdtl = [
 
 # ['B/F: Canbooked or not','Gate','Airport','A/B: Available/Busy', 'BusyFrom', 'BusyTo']
 gatedtl = [['B', 'A', 'G1', 'AUS', 0, 0],
+           ['B', 'A', 'G5', 'HOU', 0, 0],
            ['B', 'A', 'G2', 'DAL', 0, 0],
            ['B', 'A', 'G3', 'DAL', 0, 0],
            ['B', 'A', 'G4', 'HOU', 0, 0],
-           ['B', 'A', 'G5', 'HOU', 0, 0],
            ['B', 'A', 'G6', 'HOU', 0, 0]]
 
 #gate values similar for same airport to avoide within airport flight booking
