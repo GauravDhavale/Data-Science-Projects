@@ -1,2 +1,14 @@
-2017-06-26 23:26 Monday
+
+2017-06-28 14:12 Wednesday
+Checking Directory: assignment_01
+Directory created correctly - please check instructor files in that directory
+
+
+
+2017-06-28 13:51 Wednesday
+Checking Directory: lab_01
+Directory created correctly - please check instructor files in that directory
+
+
+2017-06-28 13:35 Wednesday
 Repo has been successfully matched with the galaxy user: Dhavale, Gaurav
