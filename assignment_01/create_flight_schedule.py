@@ -124,7 +124,7 @@ def updateFlightScheduleList():
     arrivaltime = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]]
     row = [bookFlight[0],bookFlight[2],bookFlight[4], minutesSinceMidntToTime(timer), 
            minutesSinceMidntToTime(arrivaltime)
-           #,bookFlight[1],bookFlight[3], minutesSinceMidntToTime(arrivaltime + airport_wait_time[bookFlight[4]]+1)
+           #,bookFlight[1],bookFlight[3], str(airport_wait_time[bookFlight[4]]), minutesSinceMidntToTime(arrivaltime + airport_wait_time[bookFlight[4]]+1)
            ]
     flight_schedule.append(row)
     #print('row', row)
@@ -136,7 +136,7 @@ def incrementTimer():
     
 """Flight Algorithm """
 def prepareFlightSchedule():
-    while timer < (end_time-65): #min time require by any flight for travel & airport wait is 65
+    while timer < (end_time): 
         resetFlightAvailability()#reset flight status for new time check
         resetGateAvailability() #reset gate status for new time check            
         for flight in aircraftdtl:
