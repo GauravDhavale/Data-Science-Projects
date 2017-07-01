@@ -15,9 +15,10 @@ aircraftdtl = [
             ['T6', 'A', 'STN', 0, 0]]
 
 # ['B/F: Canbooked or not','Gate','Airport','A/B: Available/Busy', 'BusyFrom', 'BusyTo']
-gatedtl = [['B', 'A', 'G1', 'AUS', 0, 0],
-           ['B', 'A', 'G5', 'HOU', 0, 0],
+gatedtl = [
+           ['B', 'A', 'G1', 'AUS', 0, 0], 
            ['B', 'A', 'G2', 'DAL', 0, 0],
+           ['B', 'A', 'G5', 'HOU', 0, 0],                    
            ['B', 'A', 'G3', 'DAL', 0, 0],
            ['B', 'A', 'G4', 'HOU', 0, 0],
            ['B', 'A', 'G6', 'HOU', 0, 0]]
@@ -39,6 +40,7 @@ airportGates = {'G1': 'AUS', 'G2':'DAL', 'G3':'DAL', 'G4': 'HOU', 'G5':'HOU', 'G
 
 #flights schedule entries are added in this list while preparing the schedule 
 flight_schedule = []
+flight_schedule_final = []
 
 #final flight schedule that holds records for printing
 flight_schedule_hdr = 'tail_number,origin,destination,departure_time,arrival_time'
@@ -47,6 +49,9 @@ start_time =360 #start time for flight schedule as 06:00 => (6 * 60) + 0 = 360
 timer = 360 #this value will be used for looping check till end time
 end_time = 1320 #end time of the day as 22:00 => (22 * 60) + 0 = 1320
 
+replace_gate = '';
+missing_gate = '';
+
 #"""Convert time in minute since midnight to military time"""
 def minutesSinceMidntToTime(mTime):
     return ("%02d%02d" % (divmod(mTime,60)))
@@ -54,15 +59,17 @@ def minutesSinceMidntToTime(mTime):
 #"""Function to print the flight schedule using list"""
 def printFlightScedule():
     sortFlightList()
+    for x in flight_schedule_final:
+        del x[5:7]
     with open(fileName,'wt') as f:
         print(flight_schedule_hdr, file=f)
-        for s in flight_schedule:
+        for s in flight_schedule_final:
             print(','.join(s), file=f)
 
 #"""Sort the flight list tail_number, departure_time"""
 def sortFlightList():
     import operator
-    flight_schedule.sort(key=operator.itemgetter(0, 3))
+    flight_schedule_final.sort(key=operator.itemgetter(0, 3))
 
 #reset flight availability
 def resetFlightAvailability():
@@ -89,13 +96,15 @@ def resetGateAvailability():
 
 #search gate for flight
 def searchGate():
+    import operator
+    gatedtl.sort(key=operator.itemgetter(5))
     for gate in gatedtl:
         if gateValue[gate[2]] != gateValue[bookFlight[1]]:
             if gate[4] == 0  and gate[5] == 0:
                 return gate[2]
             else:                
                 arrivalTime = timer + flight_times[bookFlight[2]+'-'+airportGates[gate[2]]]
-                if arrivalTime < end_time and arrivalTime > gate[5]:
+                if arrivalTime < end_time and arrivalTime >= gate[5]:
                     return gate[2]
     return 'NG' # in case if no gate is availale
 
@@ -124,10 +133,37 @@ def updateFlightScheduleList():
     arrivaltime = timer + flight_times[bookFlight[2]+'-'+bookFlight[4]]
     row = [bookFlight[0],bookFlight[2],bookFlight[4], minutesSinceMidntToTime(timer), 
            minutesSinceMidntToTime(arrivaltime)
-           #,bookFlight[1],bookFlight[3], str(airport_wait_time[bookFlight[4]]), minutesSinceMidntToTime(arrivaltime + airport_wait_time[bookFlight[4]]+1)
+           ,bookFlight[1],bookFlight[3]
+          # , str(airport_wait_time[bookFlight[4]]),str(bookFlight[2] + '-'+ bookFlight[4])
            ]
     flight_schedule.append(row)
     #print('row', row)
+
+#check flight location
+def checkMissingGateInfo():
+    global replace_gate
+    global missing_gate
+    for gate in airportGates.keys():
+        if sum(x.count(gate) for x in aircraftdtl) > 1:
+            replace_gate = gate            
+        if sum(x.count(gate) for x in aircraftdtl) == 0:
+            missing_gate = gate
+            return True
+    return False
+            
+def modifySchedule():
+    global flight_schedule_final
+    flight_schedule_final = flight_schedule
+    for index, item in enumerate(reversed(flight_schedule)):
+        counter = len(flight_schedule)- index - 1 
+        if item[6] == replace_gate and item[5] != missing_gate:
+            x, y = divmod(int(item[3]),100)
+            flightStartTime = x*60 + y
+            flight_schedule_final[counter][4] = minutesSinceMidntToTime(flightStartTime+flight_times[item[1]+'-'+ airportGates[replace_gate]])
+            flight_schedule_final[counter][2] = airportGates[missing_gate]
+            flight_schedule_final[counter][6] = missing_gate
+            break
+    
 
 #increment global timer
 def incrementTimer():
@@ -180,6 +216,8 @@ def prepareFlightSchedule():
                         updateFlightScheduleList()
                         break
         incrementTimer() 
+    if(checkMissingGateInfo()):
+        modifySchedule()
     printFlightScedule()
     #print(flight_schedule)
                             
