@@ -1,5 +1,5 @@
 
-2017-07-02 09:56 Sunday
+2017-07-02 10:57 Sunday
  Checking Directory: assignment_01 File: create_flight_schedule.py
 Assignment source code file found
 Assignment source code completed a run without a stack trace
@@ -7,8 +7,14 @@ Please check instructor_stdout.txt for stdout (if any)
 Please check instructor_stderr.txt for stderr (if any)
 Attempting to read flight schedule file: flight_schedule.csv
 [['T1', 'AUS', 'DAL', '0600', 360, '0650', 410], ['T1', 'DAL', 'HOU', '0720', 440, '0825', 505], ['T1', 'HOU', 'AUS', '0900', 540, '0945', 585], ['T1', 'AUS', 'DAL', '1010', 610, '1100', 660], ['T1', 'DAL', 'HOU', '1130', 690, '1235', 755], ['T1', 'HOU', 'DAL', '1310', 790, '1415', 855], ['T1', 'DAL', 'HOU', '1445', 885, '1550', 950], ['T1', 'HOU', 'AUS', '1625', 985, '1710', 1030], ['T1', 'AUS', 'DAL', '1735', 1055, '1825', 1105], ['T1', 'DAL', 'HOU', '1855', 1135, '2000', 1200], ['T1', 'HOU', 'AUS', '2035', 1235, '2120', 1280], ['T2', 'DAL', 'AUS', '0600', 360, '0650', 410], ['T2', 'AUS', 'HOU', '0715', 435, '0800', 480], ['T2', 'HOU', 'DAL', '0835', 515, '0940', 580], ['T2', 'DAL', 'AUS', '1011', 611, '1101', 661], ['T2', 'AUS', 'HOU', '1126', 686, '1211', 731], ['T2', 'HOU', 'AUS', '1246', 766, '1331', 811], ['T2', 'AUS', 'HOU', '1356', 836, '1441', 881], ['T2', 'HOU', 'AUS', '1516', 916, '1601', 961], ['T2', 'AUS', 'HOU', '1626', 986, '1711', 1031], ['T2', 'HOU', 'DAL', '1746', 1066, '1851', 1131], ['T2', 'DAL', 'AUS', '1921', 1161, '2011', 1211], ['T2', 'AUS', 'HOU', '2036', 1236, '2121', 1281], ['T3', 'HOU', 'DAL', '0600', 360, '0705', 425], ['T3', 'DAL', 'HOU', '0735', 455, '0840', 520], ['T3', 'HOU', 'DAL', '0915', 555, '1020', 620], ['T3', 'DAL', 'HOU', '1050', 650, '1155', 715], ['T3', 'HOU', 'DAL', '1230', 750, '1335', 815], ['T3', 'DAL', 'HOU', '1405', 845, '1510', 910], ['T3', 'HOU', 'DAL', '1545', 945, '1650', 1010], ['T3', 'DAL', 'AUS', '1720', 1040, '1810', 1090], ['T3', 'AUS', 'HOU', '1835', 1115, '1920', 1160], ['T3', 'HOU', 'DAL', '1955', 1195, '2100', 1260], ['T4', 'DAL', 'HOU', '0600', 360, '0705', 425], ['T4', 'HOU', 'DAL', '0740', 460, '0845', 525], ['T4', 'DAL', 'HOU', '0916', 556, '1021', 621], ['T4', 'HOU', 'AUS', '1056', 656, '1141', 701], ['T4', 'AUS', 'DAL', '1206', 726, '1256', 776], ['T4', 'DAL', 'HOU', '1326', 806, '1431', 871], ['T4', 'HOU', 'DAL', '1506', 906, '1611', 971], ['T4', 'DAL', 'HOU', '1641', 1001, '1746', 1066], ['T4', 'HOU', 'DAL', '1821', 1101, '1926', 1166], ['T4', 'DAL', 'HOU', '1956', 1196, '2101', 1261], ['T5', 'HOU', 'DAL', '0616', 376, '0721', 441], ['T5', 'DAL', 'AUS', '0751', 471, '0841', 521], ['T5', 'AUS', 'HOU', '0906', 546, '0951', 591], ['T5', 'HOU', 'DAL', '1026', 626, '1131', 691], ['T5', 'DAL', 'AUS', '1201', 721, '1251', 771], ['T5', 'AUS', 'HOU', '1316', 796, '1401', 841], ['T5', 'HOU', 'DAL', '1436', 876, '1541', 941], ['T5', 'DAL', 'HOU', '1611', 971, '1716', 1036], ['T5', 'HOU', 'AUS', '1751', 1071, '1836', 1116], ['T5', 'AUS', 'DAL', '1901', 1141, '1951', 1191], ['T5', 'DAL', 'HOU', '2021', 1221, '2126', 1286], ['T6', 'HOU', 'AUS', '0631', 391, '0716', 436], ['T6', 'AUS', 'DAL', '0741', 461, '0831', 511], ['T6', 'DAL', 'HOU', '0901', 541, '1006', 606], ['T6', 'HOU', 'DAL', '1041', 641, '1146', 706], ['T6', 'DAL', 'HOU', '1216', 736, '1321', 801], ['T6', 'HOU', 'AUS', '1357', 837, '1442', 882], ['T6', 'AUS', 'HOU', '1507', 907, '1552', 952], ['T6', 'HOU', 'DAL', '1627', 987, '1732', 1052], ['T6', 'DAL', 'HOU', '1802', 1082, '1907', 1147], ['T6', 'HOU', 'DAL', '1942', 1182, '2047', 1247]]
+Successful run of program - 5 points
 Flight schedule file loaded and validated - 5 points
 Noise restrictions validated - 5 points
 Flight times validated - 5 points
 Ground times validated - 5 points
 Maximum aircraft per gates at airport validated - 5 points
+Aircraft are in position for the next day validated - 5 points
+All aircraft flew at least 5 flights - 10 points
+All aircraft flew at least 3 flights per market - 10 points
+Total number of flights was 64
+Students will receive up to 10 points depending on the percentile of their number of flights
