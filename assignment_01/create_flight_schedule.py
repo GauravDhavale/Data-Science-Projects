@@ -75,7 +75,7 @@ def sortFlightList():
 def resetFlightAvailability():
     for item in aircraftdtl:
         if item[3] != 0 and item[4] != 0:
-            if timer > item[4]:
+            if timer >= item[4]:
                 item[1] = 'A'
             else:
                 item[1] = 'B'
@@ -104,7 +104,7 @@ def searchGate():
                 return gate[2]
             else:                
                 arrivalTime = timer + flight_times[bookFlight[2]+'-'+airportGates[gate[2]]]
-                if arrivalTime < end_time and arrivalTime >= gate[5]:
+                if arrivalTime < end_time and arrivalTime > gate[5]:
                     return gate[2]
     return 'NG' # in case if no gate is availale
 
@@ -134,8 +134,9 @@ def updateFlightScheduleList():
     row = [bookFlight[0],bookFlight[2],bookFlight[4], minutesSinceMidntToTime(timer), 
            minutesSinceMidntToTime(arrivaltime)
            ,bookFlight[1],bookFlight[3]
-          # , str(airport_wait_time[bookFlight[4]]),str(bookFlight[2] + '-'+ bookFlight[4])
-           ]
+          #, str(airport_wait_time[bookFlight[4]]),str(bookFlight[2] + '-'+ bookFlight[4])
+          #,minutesSinceMidntToTime(arrivaltime +airport_wait_time[bookFlight[4]])
+          ]
     flight_schedule.append(row)
     #print('row', row)
 
@@ -218,6 +219,9 @@ def prepareFlightSchedule():
         incrementTimer() 
     if(checkMissingGateInfo()):
         modifySchedule()
+    else:
+        global flight_schedule_final
+        flight_schedule_final = flight_schedule
     printFlightScedule()
     #print(flight_schedule)
                             
