@@ -82,38 +82,56 @@ def transformName(input_name, name_type):
 
 #This function will create database and table definition
 def createDatabaseAndTable():
-    import sqlite3 
-    import csv
-    conn = sqlite3.connect("medicare_hospital_compare.db")
-    c1 = conn.cursor()
-    glob_dir = os.path.join(fix_staging_dir_name, "*.csv")
-    for file_name in glob.glob(glob_dir):
-        if not os.path.basename(file_name) == "FY2015_Percent_Change_in_Medicare_Payments.csv":
-            new_table_name = transformName(os.path.splitext(os.path.basename(file_name))[0], "tableName")
-            file_path = os.path.join(fix_staging_dir_name,os.path.basename(file_name))
-            with open(file_path, "r", encoding ='utf-8') as f:
-                reader = csv.reader(f)
-                col_list = next(reader)
-            #prepare table creation query
-            sql_str_create = """create table if not exists """ + new_table_name+ """ ( """
-            for col_name in col_list:
-                sql_str_create += transformName(col_name, "column") + " text, "
-            #remove last extra delimiter
-            sql_str_create = sql_str_create[:-2]
-            sql_str_create += " ) "
-            sql_str_drop = """drop table if exists """ + new_table_name 
-            c1.execute(sql_str_drop)
-            c1.execute(sql_str_create)
-            # table insert query 
-            sql_str_insert = """insert into  """ + new_table_name+ """ ( """ + ', '.join( transformName(row, 'column') for row in col_list)+ """ ) values ( """+ ''.join('?, ' for col in col_list)
-            sql_str_insert = sql_str_insert[:-2] + """ ) """
-            print(new_table_name)
-            with open(file_path, "r", encoding ='utf-8') as f:
-                reader = csv.reader(f)
-                next(f)
-                for row in reader:
-                    c1.execute(sql_str_insert, tuple(row))
-            conn.commit()
+    try:
+        import sqlite3 
+        import csv
+        conn = sqlite3.connect("medicare_hospital_compare.db")
+        c1 = conn.cursor()
+        glob_dir = os.path.join(fix_staging_dir_name, "*.csv")
+        for file_name in glob.glob(glob_dir):
+            #This file is corrupt hence ignored
+            if not os.path.basename(file_name) == "FY2015_Percent_Change_in_Medicare_Payments.csv":
+                new_table_name = transformName(os.path.splitext(os.path.basename(file_name))[0], "tableName")
+                file_path = os.path.join(fix_staging_dir_name,os.path.basename(file_name))
+                with open(file_path, "r", encoding ='utf-8') as f:
+                    reader = csv.reader(f)
+                    col_list = next(reader)
+                #prepare table creation query
+                sql_str_create = """create table if not exists """ + new_table_name+ """ ( """
+                for col_name in col_list:
+                    sql_str_create += transformName(col_name, "column") + " text, "
+                #remove last extra delimiter
+                sql_str_create = sql_str_create[:-2]
+                sql_str_create += " ) "
+                sql_str_drop = """drop table if exists """ + new_table_name 
+                c1.execute(sql_str_drop)
+                c1.execute(sql_str_create)
+                # table insert query 
+                sql_str_insert = """insert into  """ + new_table_name+ """ ( """ + ', '.join( transformName(row, 'column') for row in col_list)+ """ ) values ( """+ ''.join('?, ' for col in col_list)
+                sql_str_insert = sql_str_insert[:-2] + """ ) """
+                #print(new_table_name)
+                #print(sql_str_insert)
+                #insert rows into table
+                with open(file_path, "r", encoding ='utf-8') as f:
+                    reader = csv.reader(f)
+                    next(f)
+                    for row in reader:                       
+                        if len(row) < len(col_list):
+                            #empty rows binding issue resolution
+                            counter = len(col_list) - len(row)
+                            while(counter > 0):
+                                row.append('')
+                                counter = counter -1
+                            #print(new_table_name)
+                            #print(row)  
+                        sql_row = tuple(row)
+                        c1.execute(sql_str_insert, sql_row)
+                conn.commit()
+        conn.close()
+    except:
+        conn.close() #close database connection
+        raise
+        
 
 # This function will create excel workbooks
 def createWorkbooks():
