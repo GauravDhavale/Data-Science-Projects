@@ -8,6 +8,8 @@ Created on Tue July 07 19:00:00 2017
 import os 
 import glob 
 import requests
+import openpyxl
+import sqlite3 
 
 #url for CSV FLAT zip file from data.medicare.gov for Hospital Compare data
 url_hospital =  "https://data.medicare.gov/views/bg9k-emty/files/0a9879e0-3312-4719-a1db-39fd114890f1?content_type=application%2Fzip%3B%20charset%3Dbinary&filename=Hospital_Revised_Flatfiles.zip"
@@ -83,7 +85,6 @@ def transformName(input_name, name_type):
 #This function will create database and table definition
 def createDatabaseAndTable():
     try:
-        import sqlite3 
         import csv
         conn = sqlite3.connect("medicare_hospital_compare.db")
         c1 = conn.cursor()
@@ -116,46 +117,90 @@ def createDatabaseAndTable():
                     reader = csv.reader(f)
                     next(f)
                     for row in reader:                       
-                        if len(row) < len(col_list):
+                        if len(row) <= len(col_list):
                             #empty rows binding issue resolution
-                            counter = len(col_list) - len(row)
-                            while(counter > 0):
-                                row.append('')
-                                counter = counter -1
-                            #print(new_table_name)
-                            #print(row)  
-                        sql_row = tuple(row)
-                        c1.execute(sql_str_insert, sql_row)
+                            if len(row) == 1 :
+                                #excluding empty rows
+                                if row[0].strip() != '':
+                                    counter = len(col_list) - len(row)
+                                    while(counter > 0):
+                                        row.append('')
+                                        counter = counter - 1
+                                    #print(new_table_name)
+                                    #print(row)  
+                                    sql_row = tuple(row)
+                                    c1.execute(sql_str_insert, sql_row)
+                            else:
+                                #rows and column are equal
+                                counter = len(col_list) - len(row)
+                                while(counter > 0):
+                                    row.append('')
+                                    counter = counter -1
+                                #print(new_table_name)
+                                #print(row)  
+                                sql_row = tuple(row)
+                                c1.execute(sql_str_insert, sql_row)
+                        
                 conn.commit()
         conn.close()
-    except:
+    finally:
         conn.close() #close database connection
-        raise
         
 
 # This function will create excel workbooks
-def createWorkbooks():
-    import openpyxl
+def createInHouseHospitalRankingWorkbook():
     #MS Excel Workbook of In House Proprietary Hospital Rankings and Focus List of States
     k_url = 'http://kevincrook.com/utd/hospital_ranking_focus_states.xlsx'
     r = requests.get(k_url)
     xf = open("hospital_ranking_foucus_states.xlsx", "wb") 
     xf.write(r.content)
     xf.close()
-    wb = openpyxl.load_workbook("hospital_ranking.xlsx")
+
+def createHospitalRankingWorkbook():
+    wb = openpyxl.Workbook()
     sheet_1 = wb.create_sheet("Nationwide")
+    #add headers to excel sheet
     sheet_1.cell(row = 1 , column =1, value = "Provider ID")
     sheet_1.cell(row = 1 , column =2, value = "Hospital Name")
     sheet_1.cell(row = 1 , column =3, value = "City")
     sheet_1.cell(row = 1 , column =4, value = "State")
     sheet_1.cell(row = 1 , column =5, value = "County")
+    wb.remove_sheet(wb.get_sheet_by_name("Sheet"))
+    #load data for top 100 hospital
+    wb2 = openpyxl.load_workbook("hospital_ranking_foucus_states.xlsx")
+    ranking_sheet = wb2.get_sheet_by_name("Hospital National Ranking")
+    list_provider_id = []
+    i= 2 #start with 2 to ignore header
+    while ranking_sheet.cell(row = i, column = 2).value <= 100 :
+        list_provider_id.append(ranking_sheet.cell(row = i, column = 2).value)
+        #write data into hospital_ranking file
+    try:
+        #connect to database
+        conn = sqlite3.connect("medicare_hospital_compare.db")
+        c1 = conn.cursor()
+        sql_str = "select provider_id, hospital_name, city, state, county_name from hospital_general_information where provider_id in ({})".format(','.join('?' * len(list_provider_id)))
+        sql_tupple = list(list_provider_id) 
+        rows = c1.execute(sql_str, sql_tupple)
+        for row in rows:
+            print(row) 
+    finally:
+        conn.close()     
+    wb.save("hospital_ranking.xlsx")
+    wb.close()
 
     
 #used to invoke functions in sequence
 def executeFunctions():
+    #create directory to store dataset
     createDirectory(staging_dir_name)
+    #fwtch dataset from online source and extract to directory
     fetchExtractOnlineDataset()
+    #remove null data from csv files
     removeNullFromFile()
-    createDatabaseAndTable()
+    #store data from csv file to database
+    createDatabaseAndTable() 
+    #create workbooks
+    createInHouseHospitalRankingWorkbook()
+    #createHospitalRankingWorkbook()
     
 executeFunctions()
