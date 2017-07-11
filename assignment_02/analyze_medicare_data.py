@@ -169,26 +169,68 @@ def createHospitalRankingWorkbook():
     #load data for top 100 hospital
     wb2 = openpyxl.load_workbook("hospital_ranking_foucus_states.xlsx")
     ranking_sheet = wb2.get_sheet_by_name("Hospital National Ranking")
+    focusState_sheet = wb2.get_sheet_by_name("Focus States")
     list_provider_id = []
     i= 2 #start with 2 to ignore header
     while ranking_sheet.cell(row = i, column = 2).value <= 100 :
-        list_provider_id.append(ranking_sheet.cell(row = i, column = 2).value)
+        list_provider_id.append(ranking_sheet.cell(row = i, column = 1).value)
+        i += 1
         #write data into hospital_ranking file
     try:
         #connect to database
         conn = sqlite3.connect("medicare_hospital_compare.db")
         c1 = conn.cursor()
-        sql_str = "select provider_id, hospital_name, city, state, county_name from hospital_general_information where provider_id in ({})".format(','.join('?' * len(list_provider_id)))
+        sql_str_create = """create table if not exists hospital_ranking_foucus_states (provider_id text, ranking integer )"""
+        sql_str_drop = """drop table if exists hospital_ranking_foucus_states """  
+        c1.execute(sql_str_drop)
+        c1.execute(sql_str_create)
+        i= 2 #start with 2 to ignore header
+        sql_str_insert = """ insert into hospital_ranking_foucus_states values (?,?)"""
+        for rowidx in range(2,ranking_sheet.max_row):
+            #while ranking_sheet.cell(row = i, column = 2).value != "" :
+            c1.execute(sql_str_insert, (ranking_sheet.cell(row = rowidx, column = 1).value, ranking_sheet.cell(row = rowidx, column = 2).value))
+        conn.commit()
+        """#sql_select_str = "select provider_id, hospital_name, city, state, county_name from hospital_general_information where provider_id in ({})".format(','.join('?' * len(list_provider_id)))
         sql_tupple = list(list_provider_id) 
-        rows = c1.execute(sql_str, sql_tupple)
+        rows = c1.execute(sql_select_str, sql_tupple) """
+        sql_select_str = """select hr.provider_id, hg.hospital_name, hg.city, hg.state, hg.county_name
+        from hospital_ranking_foucus_states hr join hospital_general_information hg 
+        on hr.provider_id = hg.provider_id  order by hr.ranking limit 100;"""
+        rows = c1.execute(sql_select_str)
+        #push Nationawide data into excel file
         for row in rows:
-            print(row) 
+            ws = wb.active 
+            ws.append(row)
+        #prepare statewise data
+        lstState = []
+        for i in range(2,focusState_sheet.max_row):
+            lstState.append([focusState_sheet.cell(row = i, column = 1).value, focusState_sheet.cell(row = i, column = 2).value])
+        import operator
+        lstState.sort(key=operator.itemgetter(0))
+        for item in lstState:
+            sheet_2 = wb.create_sheet(item[0])
+            #add headers to excel sheet
+            sheet_2.cell(row = 1 , column =1, value = "Provider ID")
+            sheet_2.cell(row = 1 , column =2, value = "Hospital Name")
+            sheet_2.cell(row = 1 , column =3, value = "City")
+            sheet_2.cell(row = 1 , column =4, value = "State")
+            sheet_2.cell(row = 1 , column =5, value = "County")
+            # the below query will fetch state wise top 100 rows based on rank
+            sql_select_str = """select hr.provider_id, hg.hospital_name, hg.city, hg.state, hg.county_name
+            from hospital_ranking_foucus_states hr join hospital_general_information hg 
+            on hr.provider_id = hg.provider_id where hg.state = '"""+ str(item[1])+ """' order by hr.ranking limit 100;"""
+            rows = c1.execute(sql_select_str)
+            state_sheet = wb.get_sheet_by_name(item[0])
+            #push statewise data into excel file
+            for row in rows:                
+                state_sheet.append(row)
+        sql_str_drop = """drop table if exists hospital_ranking_foucus_states """  
+        c1.execute(sql_str_drop)
     finally:
-        conn.close()     
+        conn.close()
     wb.save("hospital_ranking.xlsx")
-    wb.close()
-
-    
+    wb.close()         
+   
 #used to invoke functions in sequence
 def executeFunctions():
     #create directory to store dataset
@@ -200,7 +242,7 @@ def executeFunctions():
     #store data from csv file to database
     createDatabaseAndTable() 
     #create workbooks
-    createInHouseHospitalRankingWorkbook()
-    #createHospitalRankingWorkbook()
+    createInHouseHospitalRankingWorkbook() 
+    createHospitalRankingWorkbook()
     
 executeFunctions()
