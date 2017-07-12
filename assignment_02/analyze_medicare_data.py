@@ -156,6 +156,7 @@ def createInHouseHospitalRankingWorkbook():
     xf.write(r.content)
     xf.close()
 
+# This function will create nationwide adn statewise ranking excel file.
 def createHospitalRankingWorkbook():
     wb = openpyxl.Workbook()
     sheet_1 = wb.create_sheet("Nationwide")
@@ -186,8 +187,8 @@ def createHospitalRankingWorkbook():
         c1.execute(sql_str_create)
         i= 2 #start with 2 to ignore header
         sql_str_insert = """ insert into hospital_ranking_foucus_states values (?,?)"""
-        for rowidx in range(2,ranking_sheet.max_row):
-            #while ranking_sheet.cell(row = i, column = 2).value != "" :
+        for rowidx in range(2,ranking_sheet.max_row + 1):
+            #insert ranking and provider id into table for temporary purpose.
             c1.execute(sql_str_insert, (ranking_sheet.cell(row = rowidx, column = 1).value, ranking_sheet.cell(row = rowidx, column = 2).value))
         conn.commit()
         """#sql_select_str = "select provider_id, hospital_name, city, state, county_name from hospital_general_information where provider_id in ({})".format(','.join('?' * len(list_provider_id)))
@@ -203,7 +204,7 @@ def createHospitalRankingWorkbook():
             ws.append(row)
         #prepare statewise data
         lstState = []
-        for i in range(2,focusState_sheet.max_row):
+        for i in range(2,focusState_sheet.max_row + 1): #max_row + 1 gives all rows
             lstState.append([focusState_sheet.cell(row = i, column = 1).value, focusState_sheet.cell(row = i, column = 2).value])
         import operator
         lstState.sort(key=operator.itemgetter(0))
@@ -230,7 +231,21 @@ def createHospitalRankingWorkbook():
         conn.close()
     wb.save("hospital_ranking.xlsx")
     wb.close()         
-   
+
+
+# This function will create measures statistics.
+def measureStatistics():
+    wb = openpyxl.Workbook()
+    sheet_1 = wb.create_sheet("Nationwide")
+    #add headers to excel sheet
+    sheet_1.cell(row = 1 , column =1, value = "Measure ID")
+    sheet_1.cell(row = 1 , column =2, value = "Measure Name")
+    sheet_1.cell(row = 1 , column =3, value = "Minimum")
+    sheet_1.cell(row = 1 , column =4, value = "Maximum")
+    sheet_1.cell(row = 1 , column =5, value = "Standard Deviation")
+    wb.remove_sheet(wb.get_sheet_by_name("Sheet"))
+
+
 #used to invoke functions in sequence
 def executeFunctions():
     #create directory to store dataset
