@@ -1,5 +1,5 @@
 
-2017-07-11 09:17 Tuesday
+2017-07-13 08:53 Thursday
  Checking Directory: assignment_02 File: analyze_medicare_data.py
 Assignment source code file found
 Assignment source code completed a run without a stack trace
@@ -11,7 +11,6 @@ sqlite3 database: medicare_hospital_compare.db correctly created = 5 points
 All csv files in the Medicare hospital compare database have a staging table = 5 points
 All staging tables have all columns in the corresponding csv file = 5 points
 All data from all csv files correctly loaded into staging tables = 10 points
-Sheet: Texas is missing
-Hospital Ranking excel file: hospital_ranking.xlsx not correctly created = 0 points
+Hospital Ranking excel file: hospital_ranking.xlsx correctly created = 10 points
 Excel workbook file: measures_statistics.xlsx not found
 Measures Statistics excel file: measures_statistics.xlsx not correctly created = 0 points
