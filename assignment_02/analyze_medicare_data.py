@@ -17,6 +17,8 @@ url_hospital =  "https://data.medicare.gov/views/bg9k-emty/files/0a9879e0-3312-4
 #create a directory 
 staging_dir_name = "staging"
 fix_staging_dir_name = "staging_fixed"  #csv files stored in this directory after null fixup
+lstState = [] #the list variable to store state list
+lstMeasure = [] #Store measure id
 
 def createDirectory(dir_name):
     if not os.path.isdir(dir_name): #directory exists or not check
@@ -203,7 +205,7 @@ def createHospitalRankingWorkbook():
             ws = wb.active 
             ws.append(row)
         #prepare statewise data
-        lstState = []
+        global lstState
         for i in range(2,focusState_sheet.max_row + 1): #max_row + 1 gives all rows
             lstState.append([focusState_sheet.cell(row = i, column = 1).value, focusState_sheet.cell(row = i, column = 2).value])
         import operator
@@ -242,8 +244,75 @@ def measureStatistics():
     sheet_1.cell(row = 1 , column =2, value = "Measure Name")
     sheet_1.cell(row = 1 , column =3, value = "Minimum")
     sheet_1.cell(row = 1 , column =4, value = "Maximum")
-    sheet_1.cell(row = 1 , column =5, value = "Standard Deviation")
+    sheet_1.cell(row = 1 , column =5, value = "Average")
+    sheet_1.cell(row = 1 , column =6, value = "Standard Deviation")
     wb.remove_sheet(wb.get_sheet_by_name("Sheet"))
+    try:
+        #connect to database
+        conn = sqlite3.connect("medicare_hospital_compare.db")
+        c1 = conn.cursor()
+        #get list of measures
+        sql_select_str = """select measure_id, measure_name, min(score), max(score), avg(score) from  timely_and_effective_care___hospital 
+        where CAST(score as integer) <> 0 group by measure_id, measure_name order by measure_id"""
+        rows = c1.execute(sql_select_str)
+        #push statewise data into excel file
+        global lstMeasure
+        for row in rows:                
+            ws = wb.active
+            lstMeasure.append(row[0])
+            ws.append(row)     
+        global lstState
+        for item in lstState:
+            sheet_2 = wb.create_sheet(item[0])
+            #add headers to excel sheet
+            sheet_2.cell(row = 1 , column =1, value = "Measure ID")
+            sheet_2.cell(row = 1 , column =2, value = "Measure Name")
+            sheet_2.cell(row = 1 , column =3, value = "Minimum")
+            sheet_2.cell(row = 1 , column =4, value = "Maximum")
+            sheet_2.cell(row = 1 , column =5, value = "Average")
+            sheet_2.cell(row = 1 , column =6, value = "Standard Deviation")
+            # the below query will fetch state wise records
+            sql_select_str = """select measure_id, measure_name, min(score), max(score), avg(score) from  timely_and_effective_care___hospital 
+            where CAST(score as integer) <> 0 and state = '"""+ str(item[1]) + """' group by measure_id, measure_name order by measure_id"""
+            rows = c1.execute(sql_select_str)
+            state_sheet = wb.get_sheet_by_name(item[0])
+            #push statewise data into excel file
+            for row in rows:                
+                state_sheet.append(row)
+    finally:
+        conn.close()
+    wb.save("measures_statistics.xlsx")
+    wb.close() 
+
+#calculate standard deviation
+def calculateStdDev():
+    try:
+        import statistics
+        #connect to database
+        conn = sqlite3.connect("medicare_hospital_compare.db")
+        c1 = conn.cursor()
+        sql_select_main_str = """select measure_id, score from  timely_and_effective_care___hospital 
+        where CAST(score as integer) <> 0 order by measure_id"""
+        main_rows = c1.execute(sql_select_main_str)
+        #lstMainStdDev = zip(*main_rows)
+        global lstState
+        lstStdDev = []
+        for item in lstMeasure:
+            lstTemp =  [int(row[1]) for row in main_rows if item in row[0]]    
+            lstStdDev.append([item, statistics.stdev(lstTemp)])
+
+        wb2 = openpyxl.load_workbook("measures_statistics.xlsx")
+        Nationwide_sheet = wb2.get_sheet_by_name("Nationwide")
+        for rowidx in range(2,Nationwide_sheet.max_row + 1):
+            if (Nationwide_sheet.cell(row = rowidx, column = 1).value) in lstStdDev:
+                Row_idx = lstStdDev.index(Nationwide_sheet.cell(row = rowidx, column = 1).value)
+                Nationwide_sheet.cell(row = rowidx, column = 6).value = lstStdDev[Row_idx][1]         
+        wb.save("measures_statistics.xlsx")
+        wb.close() 
+    finally:
+         conn.close()
+    
+
 
 
 #used to invoke functions in sequence
@@ -256,8 +325,12 @@ def executeFunctions():
     removeNullFromFile()
     #store data from csv file to database
     createDatabaseAndTable() 
-    #create workbooks
-    createInHouseHospitalRankingWorkbook() 
+    #create workbooks for hospital inhouse ranking and focus group
+    createInHouseHospitalRankingWorkbook()
+    #create Nation wise and state wise top 100 hospital ranking excel file
     createHospitalRankingWorkbook()
+    #create Nation wise and state wise statistics
+    measureStatistics()
+    #calculateStdDev()
     
 executeFunctions()
