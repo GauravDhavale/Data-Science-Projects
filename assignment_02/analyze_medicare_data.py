@@ -294,16 +294,19 @@ def calculateStdDev():
         wb2 = openpyxl.load_workbook("measures_statistics.xlsx")
         Nationwide_sheet = wb2.get_sheet_by_name("Nationwide")
         for rowidx in range(2,Nationwide_sheet.max_row + 1):
+            #get measure id value amd fetch measure specific data 
             item = Nationwide_sheet.cell(row = rowidx, column = 1).value
             sql_select_main_str = """select  score from  timely_and_effective_care___hospital 
             where CAST(score as integer) <> 0 and measure_id = '"""+ item + """'"""
             select_rows = c1.execute(sql_select_main_str)
             Nationwide_sheet.cell(row = rowidx, column = 6).value = statistics.stdev(int(i[0]) for i in select_rows)
         global lstState
+        #loop through state sheets
         for item in lstState:
             state_sheet = wb2.get_sheet_by_name(item[0])
             for rowidx in range(2,state_sheet.max_row + 1):
                 measureid = state_sheet.cell(row = rowidx, column = 1).value
+                # fetch state and measure specific data
                 sql_select_main_str = """select  score from  timely_and_effective_care___hospital 
                 where CAST(score as integer) <> 0 and measure_id = '"""+ measureid + """' and state =  '"""+ item[1] + """' """
                 select_rows = c1.execute(sql_select_main_str)
@@ -311,6 +314,7 @@ def calculateStdDev():
                     select_rows1 = c1.execute(sql_select_main_str)
                     state_sheet.cell(row = rowidx, column = 6).value = statistics.stdev(int(i[0]) for i in select_rows1)
                 else:
+                    #ignore rows which has only one data in list as its not possible to calculate std deviation for 1 value
                     print(measureid," : ", item[1])
         wb2.save("measures_statistics.xlsx")
         wb2.close() 
