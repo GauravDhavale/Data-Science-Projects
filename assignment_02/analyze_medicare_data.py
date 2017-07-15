@@ -291,24 +291,29 @@ def calculateStdDev():
         #connect to database
         conn = sqlite3.connect("medicare_hospital_compare.db")
         c1 = conn.cursor()
-        sql_select_main_str = """select measure_id, score from  timely_and_effective_care___hospital 
-        where CAST(score as integer) <> 0 order by measure_id"""
-        main_rows = c1.execute(sql_select_main_str)
-        #lstMainStdDev = zip(*main_rows)
-        global lstState
-        lstStdDev = []
-        for item in lstMeasure:
-            lstTemp =  [int(row[1]) for row in main_rows if item in row[0]]    
-            lstStdDev.append([item, statistics.stdev(lstTemp)])
-
         wb2 = openpyxl.load_workbook("measures_statistics.xlsx")
         Nationwide_sheet = wb2.get_sheet_by_name("Nationwide")
         for rowidx in range(2,Nationwide_sheet.max_row + 1):
-            if (Nationwide_sheet.cell(row = rowidx, column = 1).value) in lstStdDev:
-                Row_idx = lstStdDev.index(Nationwide_sheet.cell(row = rowidx, column = 1).value)
-                Nationwide_sheet.cell(row = rowidx, column = 6).value = lstStdDev[Row_idx][1]         
-        wb.save("measures_statistics.xlsx")
-        wb.close() 
+            item = Nationwide_sheet.cell(row = rowidx, column = 1).value
+            sql_select_main_str = """select  score from  timely_and_effective_care___hospital 
+            where CAST(score as integer) <> 0 and measure_id = '"""+ item + """'"""
+            select_rows = c1.execute(sql_select_main_str)
+            Nationwide_sheet.cell(row = rowidx, column = 6).value = statistics.stdev(int(i[0]) for i in select_rows)
+        global lstState
+        for item in lstState:
+            state_sheet = wb2.get_sheet_by_name(item[0])
+            for rowidx in range(2,state_sheet.max_row + 1):
+                measureid = state_sheet.cell(row = rowidx, column = 1).value
+                sql_select_main_str = """select  score from  timely_and_effective_care___hospital 
+                where CAST(score as integer) <> 0 and measure_id = '"""+ measureid + """' and state =  '"""+ item[1] + """' """
+                select_rows = c1.execute(sql_select_main_str)
+                if len([int(i[0]) for i in select_rows]) > 1:
+                    select_rows1 = c1.execute(sql_select_main_str)
+                    state_sheet.cell(row = rowidx, column = 6).value = statistics.stdev(int(i[0]) for i in select_rows1)
+                else:
+                    print(measureid," : ", item[1])
+        wb2.save("measures_statistics.xlsx")
+        wb2.close() 
     finally:
          conn.close()
     
@@ -331,6 +336,6 @@ def executeFunctions():
     createHospitalRankingWorkbook()
     #create Nation wise and state wise statistics
     measureStatistics()
-    #calculateStdDev()
+    calculateStdDev()
     
 executeFunctions()
