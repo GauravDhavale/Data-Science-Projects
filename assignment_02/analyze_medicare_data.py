@@ -4,7 +4,6 @@ Created on Tue July 07 19:00:00 2017
 
 @author: Gaurav
 """
-
 import os 
 import glob 
 import requests
@@ -24,7 +23,6 @@ def createDirectory(dir_name):
     if not os.path.isdir(dir_name): #directory exists or not check
         #create a directory as it does not exists
         os.mkdir(dir_name)
-        
         
 #This function is used to access the dataset URL, fetch the data and load it into the directory
 def fetchExtractOnlineDataset():
@@ -148,7 +146,6 @@ def createDatabaseAndTable():
     finally:
         conn.close() #close database connection
         
-
 # This function will create excel workbooks
 def createInHouseHospitalRankingWorkbook():
     #MS Excel Workbook of In House Proprietary Hospital Rankings and Focus List of States
@@ -253,7 +250,7 @@ def measureStatistics():
         c1 = conn.cursor()
         #get list of measures
         sql_select_str = """select measure_id, measure_name, min(score), max(score), avg(score) from  timely_and_effective_care___hospital 
-        where CAST(score as integer) <> 0 group by measure_id, measure_name order by measure_id"""
+        where length(score) <= 6 group by measure_id, measure_name order by measure_id"""
         rows = c1.execute(sql_select_str)
         #push statewise data into excel file
         global lstMeasure
@@ -273,7 +270,7 @@ def measureStatistics():
             sheet_2.cell(row = 1 , column =6, value = "Standard Deviation")
             # the below query will fetch state wise records
             sql_select_str = """select measure_id, measure_name, min(score), max(score), avg(score) from  timely_and_effective_care___hospital 
-            where CAST(score as integer) <> 0 and state = '"""+ str(item[1]) + """' group by measure_id, measure_name order by measure_id"""
+            where length(score) <= 6 and state = '"""+ str(item[1]) + """' group by measure_id, measure_name order by measure_id"""
             rows = c1.execute(sql_select_str)
             state_sheet = wb.get_sheet_by_name(item[0])
             #push statewise data into excel file
@@ -297,7 +294,7 @@ def calculateStdDev():
             #get measure id value amd fetch measure specific data 
             item = Nationwide_sheet.cell(row = rowidx, column = 1).value
             sql_select_main_str = """select  score from  timely_and_effective_care___hospital 
-            where CAST(score as integer) <> 0 and measure_id = '"""+ item + """'"""
+            where length(score) <= 6 and measure_id = '"""+ item + """'"""
             select_rows = c1.execute(sql_select_main_str)
             Nationwide_sheet.cell(row = rowidx, column = 6).value = statistics.stdev(int(i[0]) for i in select_rows)
         global lstState
@@ -308,22 +305,19 @@ def calculateStdDev():
                 measureid = state_sheet.cell(row = rowidx, column = 1).value
                 # fetch state and measure specific data
                 sql_select_main_str = """select  score from  timely_and_effective_care___hospital 
-                where CAST(score as integer) <> 0 and measure_id = '"""+ measureid + """' and state =  '"""+ item[1] + """' """
+                where length(score) <= 6 and measure_id = '"""+ measureid + """' and state =  '"""+ item[1] + """' """
                 select_rows = c1.execute(sql_select_main_str)
                 if len([int(i[0]) for i in select_rows]) > 1:
                     select_rows1 = c1.execute(sql_select_main_str)
                     state_sheet.cell(row = rowidx, column = 6).value = statistics.stdev(int(i[0]) for i in select_rows1)
                 else:
-                    #ignore rows which has only one data in list as its not possible to calculate std deviation for 1 value
-                    print(measureid," : ", item[1])
+                    #assign 0 to the rows which has only one data in list as its not possible to calculate std deviation for 1 value
+                    state_sheet.cell(row = rowidx, column = 6).value = 0
         wb2.save("measures_statistics.xlsx")
         wb2.close() 
     finally:
          conn.close()
     
-
-
-
 #used to invoke functions in sequence
 def executeFunctions():
     #create directory to store dataset
