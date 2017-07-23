@@ -1,14 +1,1 @@
-Traceback (most recent call last):
-  File "analyze_medicare_data.py", line 339, in <module>
-  File "analyze_medicare_data.py", line 326, in executeFunctions
-  File "analyze_medicare_data.py", line 38, in fetchExtractOnlineDataset
-    zf.close()  
-  File "/home/ancuser/anaconda3/lib/python3.6/zipfile.py", line 1491, in extractall
-    self.extract(zipinfo, path, pwd)
-  File "/home/ancuser/anaconda3/lib/python3.6/zipfile.py", line 1479, in extract
-    return self._extract_member(member, path, pwd)
-  File "/home/ancuser/anaconda3/lib/python3.6/zipfile.py", line 1534, in _extract_member
-    os.makedirs(upperdirs)
-  File "/home/ancuser/anaconda3/lib/python3.6/os.py", line 220, in makedirs
-    mkdir(name, mode)
-FileNotFoundError: [Errno 2] No such file or directory: 'staging'
+ 
