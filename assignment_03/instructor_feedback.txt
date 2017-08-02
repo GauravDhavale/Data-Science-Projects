@@ -1,2 +1,8 @@
 
-This file will contain feedback after both preliminary and final grading runs
+2017-08-01 20:34 Tuesday
+ Checking Directory: assignment_03 File: market_basket_analytics.py
+Assignment source code file found
+Assignment hit a timeout for long run time
+Please contact instructor if you feel the run time was legitimate and not an infinite loop
+Please check instructor_stdout.txt for stdout (if any)
+Please check instructor_stderr.txt for stderr (if any)
