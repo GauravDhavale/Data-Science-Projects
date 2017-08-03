@@ -1,5 +1,5 @@
 
-2017-08-02 12:56 Wednesday
+2017-08-02 19:35 Wednesday
  Checking Directory: assignment_03 File: market_basket_analytics.py
 Assignment source code file found
 Assignment source code completed a run without a stack trace
@@ -16,13 +16,11 @@ Line 009 does not have the correct recommendation
 Line 010 does not have the correct recommendation
 Line 011 does not have the correct recommendation
 Line 012 does not have the correct recommendation
-Line 016 does not have the correct recommendation
 Line 017 does not have the correct recommendation
 Line 019 does not have the correct recommendation
 Line 020 does not have the correct recommendation
 Line 021 does not have the correct recommendation
 Line 022 does not have the correct recommendation
-Line 023 does not have the correct recommendation
 Line 024 does not have the correct recommendation
 Line 025 does not have the correct recommendation
 Line 026 does not have the correct recommendation
@@ -33,12 +31,14 @@ Line 030 does not have the correct recommendation
 Line 032 does not have the correct recommendation
 Line 033 does not have the correct recommendation
 Line 034 does not have the correct recommendation
+Line 035 does not have the correct recommendation
 Line 037 does not have the correct recommendation
 Line 038 does not have the correct recommendation
 Line 040 does not have the correct recommendation
 Line 041 does not have the correct recommendation
 Line 042 does not have the correct recommendation
 Line 043 does not have the correct recommendation
+Line 044 does not have the correct recommendation
 Line 045 does not have the correct recommendation
 Line 046 does not have the correct recommendation
 Line 047 does not have the correct recommendation
@@ -71,12 +71,12 @@ Line 078 does not have the correct recommendation
 Line 079 does not have the correct recommendation
 Line 081 does not have the correct recommendation
 Line 082 does not have the correct recommendation
-Line 086 does not have the correct recommendation
 Line 088 does not have the correct recommendation
-Line 089 does not have the correct recommendation
 Line 091 does not have the correct recommendation
+Line 092 does not have the correct recommendation
 Line 093 does not have the correct recommendation
 Line 094 does not have the correct recommendation
+Line 095 does not have the correct recommendation
 Line 096 does not have the correct recommendation
 Line 097 does not have the correct recommendation
 Line 098 does not have the correct recommendation
