@@ -1,11 +1,14 @@
 
-2017-08-03 10:09 Thursday
+2017-08-04 10:59 Friday
  Checking Directory: assignment_03 File: market_basket_analytics.py
 Assignment source code file found
 Assignment source code completed a run without a stack trace
 Please check instructor_stdout.txt for stdout (if any)
 Please check instructor_stderr.txt for stderr (if any)
 Verifying that your market_basket_recommendations.txt file exists and matches the solution file
+Line 001 does not have the correct recommendation
+Line 002 does not have the correct recommendation
+Line 004 does not have the correct recommendation
 Line 006 does not have the correct recommendation
 Line 007 does not have the correct recommendation
 Line 008 does not have the correct recommendation
@@ -14,12 +17,14 @@ Line 010 does not have the correct recommendation
 Line 011 does not have the correct recommendation
 Line 012 does not have the correct recommendation
 Line 013 does not have the correct recommendation
+Line 016 does not have the correct recommendation
 Line 017 does not have the correct recommendation
 Line 019 does not have the correct recommendation
 Line 020 does not have the correct recommendation
 Line 021 does not have the correct recommendation
 Line 022 does not have the correct recommendation
 Line 024 does not have the correct recommendation
+Line 025 does not have the correct recommendation
 Line 026 does not have the correct recommendation
 Line 027 does not have the correct recommendation
 Line 028 does not have the correct recommendation
@@ -31,19 +36,24 @@ Line 034 does not have the correct recommendation
 Line 035 does not have the correct recommendation
 Line 037 does not have the correct recommendation
 Line 038 does not have the correct recommendation
+Line 040 does not have the correct recommendation
 Line 041 does not have the correct recommendation
 Line 042 does not have the correct recommendation
+Line 043 does not have the correct recommendation
 Line 044 does not have the correct recommendation
+Line 045 does not have the correct recommendation
 Line 046 does not have the correct recommendation
 Line 047 does not have the correct recommendation
 Line 048 does not have the correct recommendation
 Line 049 does not have the correct recommendation
 Line 052 does not have the correct recommendation
+Line 054 does not have the correct recommendation
 Line 055 does not have the correct recommendation
 Line 057 does not have the correct recommendation
 Line 058 does not have the correct recommendation
 Line 059 does not have the correct recommendation
 Line 060 does not have the correct recommendation
+Line 061 does not have the correct recommendation
 Line 062 does not have the correct recommendation
 Line 063 does not have the correct recommendation
 Line 064 does not have the correct recommendation
@@ -64,8 +74,10 @@ Line 079 does not have the correct recommendation
 Line 081 does not have the correct recommendation
 Line 082 does not have the correct recommendation
 Line 083 does not have the correct recommendation
+Line 086 does not have the correct recommendation
 Line 087 does not have the correct recommendation
 Line 088 does not have the correct recommendation
+Line 089 does not have the correct recommendation
 Line 091 does not have the correct recommendation
 Line 092 does not have the correct recommendation
 Line 093 does not have the correct recommendation
@@ -74,5 +86,7 @@ Line 095 does not have the correct recommendation
 Line 096 does not have the correct recommendation
 Line 097 does not have the correct recommendation
 Line 098 does not have the correct recommendation
-Total matches: 32 of 100
-Total Points: 32
+Line 099 does not have the correct recommendation
+Line 100 does not have the correct recommendation
+Total matches: 18 of 100
+Total Points: 18
