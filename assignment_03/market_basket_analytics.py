@@ -5,7 +5,7 @@ Created on Fri Jul 28 18:55:52 2017
 @author: Gaurav
 """
 import requests
-import pandas as pd
+import operator
 
 
 # url for training data set
@@ -28,36 +28,55 @@ def downloadTrainingTestDataset():
 def suggestNewProduct():
     trainingData = []
     testData = []
-    testData = [ln.strip() for ln in open('market_basket_test.txt', "r")]
-    trainingData = [line.strip() for line in open('market_basket_training.txt', 'r')]
-    #convert into series of list using pandas
-    trainingDataSeries = pd.Series(item.split(',') for item in trainingData)
-    testDataSeries = pd.Series(item.split(',') for item in testData)
+    #company products
+    CompanyProducts = set({'P01', 'P02', 'P03','P04', 'P04', 'P05', 'P06', 'P07', 'P08', 'P09', 'P10'})
+    testData = [ln.strip('\n').split(',') for ln in open('market_basket_test.txt', "r")]
+    trainingData = [line.strip('\n').split(',') for line in open('market_basket_training.txt', 'r')]
+    from collections import Counter
     with open("market_basket_recommendations.txt", "w") as txt:
-        for item in testDataSeries:
-            tempTrainData = []
-            #print(item[1:len(item)], file=txt)
-            #iterate through training data set for every item in the cart
-            for item1 in trainingDataSeries:
-                if (set(item[1:len(item)]).issubset(set(item1[1:len(item1)]))):
-                    tempTrainData.append(item1) 
-            if len(tempTrainData)> 0:
-                #print(tempTrainData[0], file=txt)
-                #sort the list based on length of list and then transaction no in descending order
-                tempTrainData.sort(key=lambda k: (-len(k), -int(k[0])))
-                # get the difference of sets to find suggesting prodcut item only
-                tempList = set(tempTrainData[0][1:len(tempTrainData[0])]) - set(item[1:len(item)])
-                for setItem in tempList:
-                    print(item[0] + ',' + setItem, file=txt)
-                    break
-            else:
-                # case when item in the cart doesn't find any match in the training dataset
-                print(item[0], file=txt)
-    
+        for testItem in testData:
+            tempTestData = testItem.copy()
+            testItem.remove(testItem[0])
+            #print(testItem)
+            frequency_conuter = 0
+            loop_counter = 0
+            dict_frequency_conuter = {}
+            setComapare = CompanyProducts - set(testItem)
+            length_setComapare = len(list(setComapare))
+            #print('setComapare' + str(setComapare))
+            #print(length_setComapare)
+            #print(item[1:len(item)])
+            #iterate through loop till all product values are compared
+            while length_setComapare > loop_counter:
+                setCompareLoop = list(setComapare)[loop_counter]
+                if loop_counter != 0:
+                    testItem.pop()
+                loop_counter = loop_counter + 1
+                #print(loop_counter)
+                #print("setCompareLoop :-" + str(setCompareLoop))
+                testItem.append(setCompareLoop)
+                setCompareValue = set(testItem)
+                #print(setCompareValue)
+                #get frequency count of item
+                counter_result = Counter(((item[1])) for item in trainingData if set(item[1:len(item)]) == setCompareValue)
+                #print(counter_result)
+                if len(list(counter_result)) > 0:
+                    frequency_conuter = counter_result[list(counter_result)[0]]
+                else:
+                    frequency_conuter = 0
+                #print(frequency_conuter)
+                dict_frequency_conuter[setCompareLoop] = frequency_conuter
+            # sort dictionary based on counter value in descending order
+            dict_frequency_conut = sorted(dict_frequency_conuter.items(), key = operator.itemgetter(1), reverse = True)
+            #print(dict_frequency_conuter)
+            #print(dict_frequency_conut, file=txt)
+            #print(dict_frequency_conut[0][0]) 
+            print(str(tempTestData[0]) + ',' + str(dict_frequency_conut[0][0]), file=txt)    
     
 #used to invoke functions in sequence
 def executeFunctions():
     downloadTrainingTestDataset()
     suggestNewProduct()
-    
+
+#execute functions   
 executeFunctions()
