@@ -1,52 +1,12 @@
 
-2017-08-05 11:24 Saturday
+2017-08-06 12:03 Sunday
  Checking Directory: assignment_03 File: market_basket_analytics.py
 Assignment source code file found
 Assignment source code completed a run without a stack trace
 Please check instructor_stdout.txt for stdout (if any)
 Please check instructor_stderr.txt for stderr (if any)
 Verifying that your market_basket_recommendations.txt file exists and matches the solution file
-Line 007 does not have the correct recommendation
-Line 008 does not have the correct recommendation
-Line 009 does not have the correct recommendation
-Line 010 does not have the correct recommendation
-Line 011 does not have the correct recommendation
-Line 012 does not have the correct recommendation
-Line 021 does not have the correct recommendation
-Line 022 does not have the correct recommendation
-Line 028 does not have the correct recommendation
-Line 030 does not have the correct recommendation
-Line 032 does not have the correct recommendation
-Line 033 does not have the correct recommendation
-Line 034 does not have the correct recommendation
-Line 041 does not have the correct recommendation
-Line 042 does not have the correct recommendation
-Line 046 does not have the correct recommendation
-Line 047 does not have the correct recommendation
-Line 048 does not have the correct recommendation
-Line 055 does not have the correct recommendation
-Line 058 does not have the correct recommendation
-Line 059 does not have the correct recommendation
-Line 060 does not have the correct recommendation
-Line 062 does not have the correct recommendation
-Line 063 does not have the correct recommendation
-Line 064 does not have the correct recommendation
-Line 065 does not have the correct recommendation
-Line 066 does not have the correct recommendation
-Line 067 does not have the correct recommendation
 Line 068 does not have the correct recommendation
-Line 069 does not have the correct recommendation
 Line 070 does not have the correct recommendation
-Line 071 does not have the correct recommendation
-Line 072 does not have the correct recommendation
-Line 075 does not have the correct recommendation
-Line 079 does not have the correct recommendation
-Line 081 does not have the correct recommendation
-Line 082 does not have the correct recommendation
-Line 088 does not have the correct recommendation
-Line 093 does not have the correct recommendation
-Line 094 does not have the correct recommendation
-Line 097 does not have the correct recommendation
-Line 098 does not have the correct recommendation
-Total matches: 58 of 100
-Total Points: 58
+Total matches: 98 of 100
+Total Points: 98
