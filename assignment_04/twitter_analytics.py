@@ -22,6 +22,7 @@ def readTweets():
     df_string = df_grp_sorted.to_string(header=False, index_names=False).split('\n')
     # remmove spaces between language and tweets counts and join them with comma
     df_list_string = [','.join(item.split()) for item in df_string]
+    print(df_grp_sorted)
     with open("twitter_analytics.txt", "w", encoding = 'UTF-8') as txt:
         for item in json_data:
             if 'text' in item:
@@ -31,10 +32,10 @@ def readTweets():
         print(frequency_counter, file = txt) # total number of tweets
         for item in df_list_string:
             print(item, file = txt) # tweets counts ased on language
-    with open("tweets.txt", "w", encoding = 'UTF-8') as txt:
+    with open("tweets.txt", "wt", encoding = 'UTF-8') as txt:
         for item in json_data:
             if 'text' in item:
-                print(item['text'], file = txt) #tweets 
+                print(str(item['text'].encode('utf-8'))[2:-1], file = txt) #tweets 
         
 
 
