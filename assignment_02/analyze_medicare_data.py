@@ -249,7 +249,7 @@ def measureStatistics():
         conn = sqlite3.connect("medicare_hospital_compare.db")
         c1 = conn.cursor()
         #get list of measures
-        sql_select_str = """select measure_id, measure_name, min(score), max(score), avg(score) from  timely_and_effective_care___hospital 
+        sql_select_str = """select measure_id, measure_name, min(cast(score as integer)), max(cast(score as integer)), avg(cast(score as integer)) from  timely_and_effective_care___hospital 
         where length(score) <= 6 group by measure_id, measure_name order by measure_id"""
         rows = c1.execute(sql_select_str)
         #push statewise data into excel file
@@ -269,7 +269,7 @@ def measureStatistics():
             sheet_2.cell(row = 1 , column =5, value = "Average")
             sheet_2.cell(row = 1 , column =6, value = "Standard Deviation")
             # the below query will fetch state wise records
-            sql_select_str = """select measure_id, measure_name, min(score), max(score), avg(score) from  timely_and_effective_care___hospital 
+            sql_select_str = """select measure_id, measure_name, min(cast(score as integer)), max(cast(score as integer)), avg(cast(score as integer)) from  timely_and_effective_care___hospital 
             where length(score) <= 6 and state = '"""+ str(item[1]) + """' group by measure_id, measure_name order by measure_id"""
             rows = c1.execute(sql_select_str)
             state_sheet = wb.get_sheet_by_name(item[0])

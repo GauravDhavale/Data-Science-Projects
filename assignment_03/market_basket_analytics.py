@@ -8,7 +8,6 @@ import requests
 import operator
 from collections import Counter
 
-
 # url for training data set
 url_training_data = 'http://kevincrook.com/utd/market_basket_training.txt'
 url_test_data = 'http://kevincrook.com/utd/market_basket_test.txt'
@@ -24,7 +23,6 @@ def downloadTrainingTestDataset():
     tf2.write(p.content) # write content to market_basket_test.txt file
     tf2.close()
     
-
 #This function will iterate through cart and previous transaction and will suggest the new product
 def suggestNewProduct():
     trainingData = []
@@ -37,6 +35,7 @@ def suggestNewProduct():
         for testItem in testData:
             #copy item for final file printing
             tempTestData = testItem.copy()
+            #if tempTestData[0] == '068' or tempTestData[0] == '070':
             testItem.remove(testItem[0])
             frequency_conuter = 0
             loop_counter = 0
@@ -122,7 +121,7 @@ def getbasketItem(testItem, CompanyProducts,trainingData, recurssive):
       
 #used to invoke functions in sequence
 def executeFunctions():
-    downloadTrainingTestDataset()
+    #downloadTrainingTestDataset()
     suggestNewProduct()
 
 #execute functions   

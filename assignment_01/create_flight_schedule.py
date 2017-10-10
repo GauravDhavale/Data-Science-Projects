@@ -134,8 +134,9 @@ def updateFlightScheduleList():
     row = [bookFlight[0],bookFlight[2],bookFlight[4], minutesSinceMidntToTime(timer), 
            minutesSinceMidntToTime(arrivaltime)
            ,bookFlight[1],bookFlight[3]
-          #, str(airport_wait_time[bookFlight[4]]),str(bookFlight[2] + '-'+ bookFlight[4])
-          #,minutesSinceMidntToTime(arrivaltime +airport_wait_time[bookFlight[4]])
+         # , str(airport_wait_time[bookFlight[4]]),str(bookFlight[2] + '-'+ bookFlight[4])
+          #,minutesSinceMidntToTime(arrivaltime +airport_wait_time[bookFlight[4]]),
+          #bookFlight[1], bookFlight[3]
           ]
     flight_schedule.append(row)
     #print('row', row)
