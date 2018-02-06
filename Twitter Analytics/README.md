@@ -1,9 +1,7 @@
-# My Practice Projects to expore Data Science concepts in Python
 
-It has 4 problems solutions
-1: Flight scheduling 
-2: Analyze Medicare Data
-3: Market Basket Analytics
-4: Twitter Analytics
+## Social Media Analytics using python
 
-Each assignment folder has a source code for every individual assignment. Source code files has a step by step explanation to achieve the results
+•	Problem Statement: Given a file of Twitter events in JSON format, perform some simple analytics on the Tweets 
+• Downloaded the JSON file of Twitter events and counted total number of events, tweets, total no of tweets group by language 
+•	Scanned and printed tweets in utf-8 encoding 
+•	Package used: requests, pandas
